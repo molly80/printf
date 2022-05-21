@@ -10,13 +10,14 @@
  * Return: number of chars that print
  */
 
-int _printf(const char* format, ...)
+int _printf(const char *format, ...)
 {
-va_list args;
+	va_list args;
 	int length = 0;
 
+
 	if (format == NULL)
-		return (-1);
+	return (-1);
 
 	va_start(args, format);
 
