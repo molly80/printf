@@ -55,12 +55,17 @@ void vprintk( const char* fmt, va_list args)
 
 
 int _printf(const char* format, ...)
-{ int _printf;
-	va_list args;
+{
+va_list args;
+	int length = 0;
+
+	if (format == NULL)
+		return (-1);
+
 	va_start(args, format);
-	vprintk(format, args);
+
+	length = _print_format(format, args);
+	vprintk(format,args);
 	va_end(args);
-
-return _printf;
-
+	return (length);
 }
