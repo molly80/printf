@@ -21,7 +21,6 @@ va_list args;
 	va_start(args, format);
 
 	length = _print_format(format, args);
-	vprintk(format,args);
 	va_end(args);
 	return (length);
 }
