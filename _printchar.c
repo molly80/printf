@@ -10,7 +10,7 @@
   */
 int _printchar(va_list args)
 {
-	_write(va_arg(args, int));
+	_putchar(va_arg(args, int));
 	return (1);
 }
 
@@ -23,24 +23,9 @@ int _printchar(va_list args)
 int _printstring(va_list args)
 {
 	char *arg = va_arg(args, char *);
-	int i = 0;
 
-	if (arg != NULL)
-	{
-		while (arg[i])
-		{
-			_write(arg[i]);
-			i++;
-		}
+	if (!arg)
+		arg = "(null)";
 
-		return (i);
-	}
-
-	_write('(');
-	_write('n');
-	_write('u');
-	_write('l');
-	_write('l');
-	_write(')');
-	return (6);
+	return (_puts(arg));
 }

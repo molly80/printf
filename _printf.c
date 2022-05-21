@@ -12,16 +12,44 @@
 
 int _printf(const char *format, ...)
 {
+
+	register int count = 0;
 	va_list args;
-	int length = 0;
-
-
-	if (format == NULL)
-	return (-1);
+	const char *str;
+	int (*func)(va_list);
 
 	va_start(args, format);
-
-	length = _print_format(format, args);
+	str = format;
+	while (*str)
+	{
+		if (*str == '%')
+		{
+			str++;
+			if (*str == '%')
+			{
+				_putchar('%');
+				count++;
+			}
+			else
+			{
+				func = get_func(*str);
+				if (!func)
+				{
+					_putchar(*str);
+					count++;
+				}
+				else
+					count += func(args);
+			}
+		}
+		else
+		{
+			_putchar(*str);
+			count++;
+		}
+		str++;
+	}
+	_putchar(-1);
 	va_end(args);
-	return (length);
+	return (count);
 }
