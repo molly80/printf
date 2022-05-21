@@ -1,8 +1,13 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
-/* condition:
+/**
+* vprintk - function to define how different states are handled 
+* @fmt: string whit format to print
+*
+* condition:
 * 0: regular
 * 1: escape
 */
@@ -52,7 +57,12 @@ void vprintk( const char* fmt, va_list args)
     }
 
 }
-
+/**
+ * _printf - function my printf
+ * @format: string which format to print
+ *
+ * Return: number of chars that print
+ */
 
 int _printf(const char* format, ...)
 {

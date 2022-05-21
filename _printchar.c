@@ -1,28 +1,46 @@
 #include "main.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * _printchar - prints a character to the screen
- * @args:list of arguments
- *
- * Return: void
- */
+  * _printchar - Prints a char
+  * @args: A list of variadic arguments
+  *
+  * Return: The length of the character
+  */
 int _printchar(va_list args)
 {
-	return (putchar(va_arg(args, int)));
+	_write(va_arg(args, int));
+	return (1);
 }
 
 /**
- * _printstr - prints a string to the screen
- * @args: list of arguments
- *
- * Return: void
- */
-int _printstr(va_list args)
+  * _printstring - Prints a string
+  * @args: A list of variadic arguments
+  *
+  * Return: The length of the string
+  */
+int _printstring(va_list args)
 {
-	char *str = va_arg(args, char *);
+	char *arg = va_arg(args, char *);
+	int i = 0;
 
-	if (!str)
-		str = "(null)";
+	if (arg != NULL)
+	{
+		while (arg[i])
+		{
+			_write(arg[i]);
+			i++;
+		}
 
-	return (puts(str));
+		return (i);
+	}
+
+	_write('(');
+	_write('n');
+	_write('u');
+	_write('l');
+	_write('l');
+	_write(')');
+	return (6);
 }
