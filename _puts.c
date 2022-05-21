@@ -1,3 +1,4 @@
+#include "main.h"
 /**
  * _puts - Helps print a string to the terminal
  * @str: string parameter
