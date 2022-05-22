@@ -4,10 +4,10 @@
 #include <stdlib.h>
 
 /**
- * _printf - function my printf
+ * _printf - main implementing function for printf
  * @format: string which format to print
  *
- * Return: number of chars that print
+ * Return: number of characters that print
  */
 
 int _printf(const char *format, ...)
