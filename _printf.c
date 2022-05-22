@@ -1,8 +1,15 @@
 #include "main.h"
 /**
+<<<<<<< HEAD
  * _printf - printf function
  * @format: const char pointer
  * Return: b_len
+=======
+ * _printf - main implementing function for printf
+ * @format: string which format to print
+ *
+ * Return: number of characters that print
+>>>>>>> ME9OD6_branch
  */
 int _printf(const char *format, ...)
 {
