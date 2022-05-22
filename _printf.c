@@ -6,38 +6,31 @@
  */
 int _printf(const char *format, ...)
 {
-	int (*func)(va_list, flag_t *);
-	const char *s;
-	va_list arguments;
-	flag_t flags = {0, 0, 0};
-
 	register int count = 0;
-
+	va_list arguments;
+	char *str;
+	int (*func)(va_list);
 	va_start(arguments, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-	for (s = format; *s; s++)
+
+	str = format;
+	while(*str)
 	{
-		if (*s == '%')
+		if (*str == '%')
 		{
-			s++;
-			if (*s == '%')
-			{
-				count += _putchar('%');
-				continue;
-			}
-			while (get_flags(*s, &flags))
-				s++;
-			func = get_func(*s);
-			count += (func)
-				? func(arguments, &flags)
-				: _printf("%%%c", *s);
-		} else
-			count += _putchar(*s);
+			str++;
+			func = get_func(*str);
+			if (!func)
+
+			count += func(args);
+		}
+		else
+		{
+			_putchar(*str);
+			count++;
+		}
+		str++;
 	}
-	_putchar(-1);
+
 	va_end(arguments);
 	return (count);
 }
