@@ -15,6 +15,8 @@ int (*get_func(char s))(va_list, flag_t *)
 	id func_arr[] = {
 		{'s', _printstring},
 		{'c', _printchar},
+		{'d', _print_dec},
+		{'i', _print_dec},
 		{'S', _printspecifier},
 		{'\0', NULL}
 	};
