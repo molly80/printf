@@ -1,55 +1,43 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-
 /**
- * _printf - function my printf
- * @format: string which format to print
- *
- * Return: number of chars that print
+ * _printf - printf function
+ * @format: const char pointer
+ * Return: b_len
  */
-
 int _printf(const char *format, ...)
 {
+	int (*func)(va_list, flag_t *);
+	const char *s;
+	va_list arguments;
+	flag_t flags = {0, 0, 0};
 
 	register int count = 0;
-	va_list args;
-	const char *str;
-	int (*func)(va_list);
 
-	va_start(args, format);
-	str = format;
-	while (*str)
+	va_start(arguments, format);
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (s = format; *s; s++)
 	{
-		if (*str == '%')
+		if (*s == '%')
 		{
-			str++;
-			if (*str == '%')
+			s++;
+			if (*s == '%')
 			{
-				_putchar('%');
-				count++;
+				count += _putchar('%');
+				continue;
 			}
-			else
-			{
-				func = get_func(*str);
-				if (!func)
-				{
-					_putchar(*str);
-					count++;
-				}
-				else
-					count += func(args);
-			}
-		}
-		else
-		{
-			_putchar(*str);
-			count++;
-		}
-		str++;
+			while (get_flags(*s, &flags))
+				s++;
+			func = get_func(*s);
+			count += (func)
+				? func(arguments, &flags)
+				: _printf("%%%c", *s);
+		} else
+			count += _putchar(*s);
 	}
 	_putchar(-1);
-	va_end(args);
+	va_end(arguments);
 	return (count);
 }

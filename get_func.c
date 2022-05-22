@@ -10,22 +10,21 @@
  * printing function
  * Return: a pointer to the matching printing function
  */
-int (*get_func(char s))(va_list)
+int (*get_func(char s))(va_list, flag_t *)
 {
 	id func_arr[] = {
 		{'s', _printstring},
 		{'c', _printchar},
-		{'\0', NULL}
+/*		{'%', _printpercent},*/
 	};
-	int i = 0;
+	int flags = 2;
+	
+	register int i;
 
-	while (func_arr[i].symbol != '\0')
-	{
+
+	for (i = 0; i < flags; i++)
 		if (func_arr[i].symbol == s)
-		{
-			return (func_arr[i].func);
-		}
-		i++;
-	}
+			return (func_arr[i].f);
 	return (NULL);
+
 }

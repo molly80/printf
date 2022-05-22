@@ -7,11 +7,20 @@
 #include <limits.h>
 #include <unistd.h>
 
+/* Flags struct */
+typedef struct flags
+{
+	int plus;
+	int space;
+	int hash;
+}flag_t;
+
+
 /* identifiers struct */
 typedef struct identifiers
 {
 	char symbol;
-	int (*func)(va_list);
+	int (*f)(va_list ap, flag_t *f);
 } id;
 
 
@@ -24,12 +33,17 @@ int _puts(char *str);
 int _printf(const char *format, ...);
 
 /* Print character functions */
-int _printchar(va_list args);
-int _printstring(va_list args);
+int _printchar(va_list args, flag_t *p);
+int _printstring(va_list args, flag_t *p);
+int _printspecifier(va_list args, flag_t *p);
 
 
 
 /* Function Pointer Generator */
-int (*get_func(char s))(va_list);
+int (*get_func(char s))(va_list, flag_t *p);
+
+int get_flags(char elem, flag_t *p);
+
+char *convert(unsigned long int num, int base, int lowercase);
 
 #endif /* MAIN_H_ */
