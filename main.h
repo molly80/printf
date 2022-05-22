@@ -41,22 +41,23 @@ int _printspecifier(va_list args, flag_t *p);
 int _print_dec(va_list valist, flag_t *f);
 
 /* Print other bases*/
-int _print_binary(va_list);
-int _print_hexa_upper(va_list);
-int _print_hexa_lower(va_list);
-int _print_octal(va_list);
-int _print_unsigned(va_list);
+int _print_binary(va_list, flag_t *);
+int _print_hexa_upper(va_list, flag_t *);
+int _print_hexa_lower(va_list, flag_t *);
+int _print_octal(va_list, flag_t *);
+int _print_unsigned(va_list, flag_t *);
+int _print_address(va_list, flag_t *);
 
 /* Function that help */
 void print_number(int n);
 int count_digits(int n);
-char *convert(unsigned int num, int base, int lowercase);
+char *convert(unsigned long int num, int base, int lowercase);
+
 
 /* Function Pointer Generator */
 int (*get_func(char s))(va_list, flag_t *p);
 
 int get_flags(char elem, flag_t *p);
 
-char *convert(unsigned long int num, int base, int lowercase);
 
 #endif /* MAIN_H_ */
