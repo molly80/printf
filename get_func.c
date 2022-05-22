@@ -15,16 +15,24 @@ int (*get_func(char s))(va_list, flag_t *)
 	id func_arr[] = {
 		{'s', _printstring},
 		{'c', _printchar},
-/*		{'%', _printpercent},*/
+		{'S', _printspecifier},
+		{'\0', NULL}
 	};
-	int flags = 2;
+	int i = 0;
 	
-	register int i;
-
-
-	for (i = 0; i < flags; i++)
+	while (func_arr[i].symbol != '\0')
+	{
 		if (func_arr[i].symbol == s)
-			return (func_arr[i].f);
+		{
+			return (func_arr[i].func);
+		}
+		i++;
+	}
 	return (NULL);
-
 }
+
+
+
+
+
+

@@ -20,7 +20,7 @@ typedef struct flags
 typedef struct identifiers
 {
 	char symbol;
-	int (*f)(va_list ap, flag_t *f);
+	int (*func)(va_list, flag_t *);
 } id;
 
 
