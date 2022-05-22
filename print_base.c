@@ -44,6 +44,7 @@ int _print_hexa_upper(va_list valist, flag_t *f)
  * @valist: va_list parameter
  * @f: pointer to flag_t
  *
+ *
  * Return: length of number
  */
 int _print_hexa_lower(va_list valist, flag_t *f)
