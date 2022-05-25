@@ -1,130 +1,84 @@
 #include "main.h"
 
 /**
- * _isdigit - checks if character is digit
- * @c: the character to check
- *
- * Return: 1 if digit, 0 otherwise
+ * print_int - prints an integer
+ * @l: va_list of arguments from _printf
+ * @f: pointer to the struct flags determining
+ * if a flag is passed to _printf
+ * Return: number of char printed
  */
-int _isdigit(int c)
+int print_int(va_list l, flags_t *f)
 {
-	return (c >= '0' && c <= '9');
+	int n = va_arg(l, int);
+	int res = count_digit(n);
+
+	if (f->space == 1 && f->plus == 0 && n >= 0)
+		res += _putchar(' ');
+	if (f->plus == 1 && n >= 0)
+		res += _putchar('+');
+	if (n <= 0)
+		res++;
+	print_number(n);
+	return (res);
 }
 
 /**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
+ * print_unsigned - prints an unsigned integer
+ * @l: va_list of arguments from _printf
+ * @f: pointer to the struct flags determining
+ * if a flag is passed to _printf
+ * Return: number of char printed
  */
-int _strlen(char *s)
+int print_unsigned(va_list l, flags_t *f)
 {
-	int i = 0;
+	unsigned int u = va_arg(l, unsigned int);
+	char *str = convert(u, 10, 0);
 
-	while (*s++)
-		i++;
-	return (i);
+	(void)f;
+	return (_puts(str));
 }
 
 /**
- * print_number - prints a number with options
- * @str: the base number as a string
- * @params: the parameter struct
- *
- * Return: chars printed
+ * print_number - helper function that loops through
+ * an integer and prints all its digits
+ * @n: integer to be printed
  */
-int print_number(char *str, params_t *params)
+void print_number(int n)
 {
-	unsigned int i = _strlen(str);
-	int neg = (!params->unsign && *str == '-');
+	unsigned int n1;
 
-	if (!params->precision && *str == '0' && !str[1])
-		str = "";
-	if (neg)
+	if (n < 0)
 	{
-		str++;
-		i--;
+		_putchar('-');
+		n1 = -n;
 	}
-	if (params->precision != UINT_MAX)
-		while (i++ < params->precision)
-			*--str = '0';
-	if (neg)
-		*--str = '-';
-
-	if (!params->minus_flag)
-		return (print_number_right_shift(str, params));
 	else
-		return (print_number_left_shift(str, params));
+		n1 = n;
+
+	if (n1 / 10)
+		print_number(n1 / 10);
+	_putchar((n1 % 10) + '0');
 }
 
 /**
- * print_number_right_shift - prints a number with options
- * @str: the base number as a string
- * @params: the parameter struct
- *
- * Return: chars printed
+ * count_digit - returns the number of digits in an integer
+ * for _printf
+ * @i: integer to evaluate
+ * Return: number of digits
  */
-int print_number_right_shift(char *str, params_t *params)
+int count_digit(int i)
 {
-	unsigned int n = 0, neg, neg2, i = _strlen(str);
-	char pad_char = ' ';
+	unsigned int d = 0;
+	unsigned int u;
 
-	if (params->zero_flag && !params->minus_flag)
-		pad_char = '0';
-	neg = neg2 = (!params->unsign && *str == '-');
-	if (neg && i < params->width && pad_char == '0' && !params->minus_flag)
-		str++;
+	if (i < 0)
+		u = i * -1;
 	else
-		neg = 0;
-	if ((params->plus_flag && !neg2) ||
-		(!params->plus_flag && params->space_flag && !neg2))
-		i++;
-	if (neg && pad_char == '0')
-		n += _putchar('-');
-	if (params->plus_flag && !neg2 && pad_char == '0' && !params->unsign)
-		n += _putchar('+');
-	else if (!params->plus_flag && params->space_flag && !neg2 &&
-		!params->unsign && params->zero_flag)
-		n += _putchar(' ');
-	while (i++ < params->width)
-		n += _putchar(pad_char);
-	if (neg && pad_char == ' ')
-		n += _putchar('-');
-	if (params->plus_flag && !neg2 && pad_char == ' ' && !params->unsign)
-		n += _putchar('+');
-	else if (!params->plus_flag && params->space_flag && !neg2 &&
-		!params->unsign && !params->zero_flag)
-		n += _putchar(' ');
-	n += _puts(str);
-	return (n);
-}
-
-/**
- * print_number_left_shift - prints a number with options
- * @str: the base number as a string
- * @params: the parameter struct
- *
- * Return: chars printed
- */
-int print_number_left_shift(char *str, params_t *params)
-{
-	unsigned int n = 0, neg, neg2, i = _strlen(str);
-	char pad_char = ' ';
-
-	if (params->zero_flag && !params->minus_flag)
-		pad_char = '0';
-	neg = neg2 = (!params->unsign && *str == '-');
-	if (neg && i < params->width && pad_char == '0' && !params->minus_flag)
-		str++;
-	else
-		neg = 0;
-
-	if (params->plus_flag && !neg2 && !params->unsign)
-		n += _putchar('+'), i++;
-	else if (params->space_flag && !neg2 && !params->unsign)
-		n += _putchar(' '), i++;
-	n += _puts(str);
-	while (i++ < params->width)
-		n += _putchar(pad_char);
-	return (n);
+		u = i;
+	while (u != 0)
+	{
+		u /= 10;
+		d++;
+	}
+	return (d);
 }
