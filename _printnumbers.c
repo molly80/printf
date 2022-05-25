@@ -1,76 +1,83 @@
 #include "main.h"
 
 /**
- * _print_dec - prints decimal numbers to the screen
- * @valist: variable list of arguments
- * @f: pointer to flag_t
+ * convert - converter function, a clone of itoa
+ * @num: number
+ * @base: base
+ * @flags: argument flags
+ * @params: paramater struct
  *
- * Return: Always (0);
+ * Return: string
  */
-int _print_dec(va_list valist, flag_t *f)
+char *convert(long int num, int base, int flags, params_t *params)
 {
-	int num = va_arg(valist, int);
-	int count = count_digits(num);
+	static char *array;
+	static char buffer[50];
+	char sign = 0;
+	char *ptr;
+	unsigned long n = num;
+	(void)params;
 
-	if (f->space == 1 && f->plus == 0 && num >= 0)
-		count += _putchar(' ');
-	if (f->plus == 1 && num >= 0)
-		count += _putchar('+');
-	if (num <= 0)
-		count++;
+	if (!(flags & CONVERT_UNSIGNED) && num < 0)
+	{
+		n = -num;
+		sign = '-';
 
-	print_number(num);
-	return (count);
+	}
+	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
+	ptr = &buffer[49];
+	*ptr = '\0';
+
+	do	{
+		*--ptr = array[n % base];
+		n /= base;
+	} while (n != 0);
+
+	if (sign)
+		*--ptr = sign;
+	return (ptr);
+}
+
+/**
+ * print_unsigned - prints unsigned integer numbers
+ * @ap: argument pointer
+ * @params: the parameters struct
+ *
+ * Return: bytes printed
+ */
+int print_unsigned(va_list ap, params_t *params)
+{
+	unsigned long l;
+
+	if (params->l_modifier)
+		l = (unsigned long)va_arg(ap, unsigned long);
+	else if (params->h_modifier)
+		l = (unsigned short int)va_arg(ap, unsigned int);
+	else
+		l = (unsigned int)va_arg(ap, unsigned int);
+	params->unsign = 1;
+	return (print_number(convert(l, 10, CONVERT_UNSIGNED, params), params));
 }
 
 
-/**
- * print_number - helps other functions print numbers to the screen
- * @n: integer parameter
- *
- * Return: void
- */
-void print_number(int n)
-{
-
-	unsigned int m;
-
-	if (n < 0)
-	{
-		_putchar('-');
-		m = -n;
-	}
-	else
-	{
-		m = n;
-	}
-
-
-	if (m / 10)
-		print_number(m / 10);
-	_putchar('0' + (m % 10));
-}
-
 
 /**
- * count_digits - counts the number of digits in a number
- * @n: integer parameter
+ * print_address - prints address
+ * @ap: argument pointer
+ * @params: the parameters struct
  *
- * Return: number of digits
+ * Return: bytes printed
  */
-int count_digits(int n)
+int print_address(va_list ap, params_t *params)
 {
-	unsigned int count = 0;
-	unsigned int m;
+	unsigned long int n = va_arg(ap, unsigned long int);
+	char *str;
 
-	if (n < 0)
-		m = (-1 * n);
-	else
-		m = n;
-	while (m != 0)
-	{
-		m /= 10;
-		count++;
-	}
-	return (count);
+	if (!n)
+		return (_puts("(nil)"));
+
+	str = convert(n, 16, CONVERT_UNSIGNED | CONVERT_LOWERCASE, params);
+	*--str = 'x';
+	*--str = '0';
+	return (print_number(str, params));
 }

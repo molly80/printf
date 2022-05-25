@@ -7,10 +7,9 @@
  */
 int _puts(char *str)
 {
-	register int i;
+	char *a = str;
 
-	for (i = 0; str[i] != '\0'; i++)
-		_putchar(str[i]);
-
-	return (i);
+	while (*str)
+		_putchar(*str++);
+	return (str - a);
 }
