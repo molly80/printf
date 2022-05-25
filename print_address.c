@@ -1,29 +1,79 @@
 #include "main.h"
 
 /**
- * _print_address - function to print address
- * @valist: variable arguments
- * @f: pointer to flag_t
+ * print_from_to - prints a range of char addresses
+ * @start: starting address
+ * @stop: stopping address
+ * @except: except address
  *
- * Return: count
+ * Return: number bytes printed
  */
-int _print_address(va_list valist, flag_t *f)
+int print_from_to(char *start, char *stop, char *except)
 {
-	char *str;
-	int count = 0;
-	unsigned long int addr = va_arg(valist, unsigned long int);
+	int sum = 0;
 
-	if (!addr)
+	while (start <= stop)
 	{
-		return (_puts("(nil)"));
+		if (start != except)
+			sum += _putchar(*start);
+		start++;
 	}
+	return (sum);
+}
 
-	(void)f;
+/**
+ * print_rev - prints string in reverse
+ * @ap: string
+ * @params: the parameters struct
+ *
+ * Return: number bytes printed
+ */
+int print_rev(va_list ap, params_t *params)
+{
+	int len, sum = 0;
+	char *str = va_arg(ap, char *);
+	(void)params;
 
-	count += _putchar('0');
-	count += _putchar('x');
-	str = convert(addr, 16, 1);
-	count += _puts(str);
+	if (str)
+	{
+		for (len = 0; *str; str++)
+			len++;
+		str--;
+		for (; len > 0; len--, str--)
+			sum += _putchar(*str);
+	}
+	return (sum);
+}
 
+/**
+ * print_rot13 - prints string in rot13
+ * @ap: string
+ * @params: the parameters struct
+ *
+ * Return: number bytes printed
+ */
+int print_rot13(va_list ap, params_t *params)
+{
+	int i, index;
+	int count = 0;
+	char arr[] =
+		"NOPQRSTUVWXYZABCDEFGHIJKLM      nopqrstuvwxyzabcdefghijklm";
+	char *a = va_arg(ap, char *);
+	(void)params;
+
+	i = 0;
+	index = 0;
+	while (a[i])
+	{
+		if ((a[i] >= 'A' && a[i] <= 'Z')
+		    || (a[i] >= 'a' && a[i] <= 'z'))
+		{
+			index = a[i] - 65;
+			count += _putchar(arr[index]);
+		}
+		else
+			count += _putchar(a[i]);
+		i++;
+	}
 	return (count);
 }
