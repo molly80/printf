@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 #include "main.h"
 /**
  * _printf - printf function
@@ -44,4 +41,3 @@ int _printf(const char *format, ...)
 	va_end(arguments);
 	return (count);
 }
->>>>>>> refs/remotes/origin/master
