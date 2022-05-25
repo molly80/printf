@@ -1,55 +1,55 @@
-#include "main.h"
-#include <stdio.h>
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "main.h"
 
 /**
- * _printf - main implementing function for printf
- * @format: string which format to print
+ * _printf - all logic for the printf project.
+ * @format: string specifier formats.
  *
- * Return: number of characters that print
+ * Return: gives the lenght(char_num++)
  */
-
 int _printf(const char *format, ...)
 {
+	va_list ap;
+	unsigned int i, char_num;
 
-	register int count = 0;
-	va_list args;
-	const char *str;
-	int (*func)(va_list);
+	i = 0;
+	char_num = 0;
 
-	va_start(args, format);
-	str = format;
-	while (*str)
+	if (!format)
+		return (-1);
+	va_start(ap, format);
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (*str == '%')
+		if (format[i] != '%')
 		{
-			str++;
-			if (*str == '%')
+			if (format[i + 1] == '\0')
+				return (-1);
+			else if (format[i + 1] == '%')
 			{
 				_putchar('%');
-				count++;
+				char_num++;
+				i++;
+			}
+			else if (func(format[i + 1]) != NULL)
+			{
+				char_num += (func(format[i + 1]))(ap);
+				i++;
 			}
 			else
 			{
-				func = get_func(*str);
-				if (!func)
-				{
-					_putchar(*str);
-					count++;
-				}
-				else
-					count += func(args);
+				_putchar(format[i]);
+				char_num++;
 			}
 		}
 		else
 		{
-			_putchar(*str);
-			count++;
+			_putchar(format[i]);
+			char_num++;
 		}
-		str++;
-	}
-	_putchar(-1);
-	va_end(args);
-	return (count);
+	} return (char_num);
+	va_end(ap);
 }
+
